@@ -1,0 +1,19 @@
+name: Rebuild all images 
+
+on: [pull_request]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        images: [env, vim]
+
+    steps:
+
+    - uses: actions/checkout@master
+
+    - name: Build the Docker image
+      run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
