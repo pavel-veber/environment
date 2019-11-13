@@ -12,5 +12,3 @@ set noendofline
 " set nofixendofline
 
 map <C-n> :NERDTreeToggle<CR>
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
