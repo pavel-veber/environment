@@ -1,0 +1,28 @@
+name: Rebuild all images 
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        images: [env, vim]
+
+    steps:
+
+    - uses: actions/checkout@master
+
+    - name: Docker login
+      run: docker login docker.pkg.github.com -u pavel-veber -p ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build the Docker image
+      run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
+
+    - name: Docker push 
+      run: docker push docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest
