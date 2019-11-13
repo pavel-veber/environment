@@ -1,0 +1,5 @@
+---
+
+common_clean_commands:
+  - "dnf clean all"
+  - "rm -rf /var/cache/yum /tmp/* /var/tmp/*"

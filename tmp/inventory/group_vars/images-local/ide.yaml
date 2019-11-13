@@ -1,0 +1,77 @@
+---
+versions:
+  kubernetes: "{{ lookup('url', 'https://storage.googleapis.com/kubernetes-release/release/stable.txt') }}"
+  golang: "1.13.5"
+
+images:
+  ide:
+    from_img: "docker.io/library/centos:8"
+    to_img: "quay.io/pavel_veber/ide:latest"
+    labels:
+      version: "1.0"
+      name: "ide"
+      description: "Just VIM with some plugins"
+    author: "pavel.veber@yahoo.com"
+    cmd: "tmux"
+    workingdir: "/source/"
+    hostname: "ide"
+    env:
+      LANG: "en_US.UTF-8"
+      TERM: "xterm-256color"
+      PATH: "$PATH:/usr/local/go/bin"
+    dirs:
+      - "/usr/local/go/"
+      - "/root/.vim/autoload/"
+      - "/root/.vim/bundle"
+    files:
+      - src: "{{ playbook_dir }}/files/ide/home/"
+        dest: "/root/"
+      - src: "{{ playbook_dir }}/files/ide/etc/dnf/dnf.conf"
+        dest: "/etc/dnf/dnf.conf"
+    exec:
+      - "RUNZSH=no /tmp/ohmyzsh_install.sh"
+      - "usermod -s /usr/bin/zsh $(whoami)"
+    clean: "{{ common_clean_commands + ['find /root/.vim/bundle/ -type d -name \".git\" -prune -exec rm -rf {} \\;'] }}"
+    git:
+      - repo: "https://github.com/scrooloose/nerdtree.git"
+        dest: "/root/.vim/bundle/nerdtree"
+      - repo: "https://github.com/Xuyuanp/nerdtree-git-plugin.git"
+        dest: "/root/.vim/bundle/nerdtree-git-plugin"
+      - repo: "https://github.com/nvie/vim-flake8.git"
+        dest: "/root/.vim/bundle/vim-flake8"
+      - repo: "https://github.com/airblade/vim-gitgutter.git"
+        dest: "/root/.vim/bundle/vim-gitgutter"
+      - repo: "https://github.com/itchyny/lightline.vim"
+        dest: "/root/.vim/bundle/lightline"
+      - repo: "https://github.com/Yggdroot/indentLine.git"
+        dest: "/root/.vim/bundle/indentLine"
+      - repo: "https://github.com/davidhalter/jedi-vim.git"
+        dest: "/root/.vim/bundle/jedi-vim"
+        recursive: True
+      - repo: "https://github.com/fatih/vim-go.git"
+        dest: "/root/.vim/bundle/vim-go"
+    packages:
+      bin:
+        - url: "https://storage.googleapis.com/kubernetes-release/release/{{ versions.kubernetes }}/bin/linux/amd64/kubectl"
+          dest: "/usr/local/bin/kubectl"
+          mode: "755"
+        - url: "https://dl.google.com/go/go{{ versions.golang }}.linux-amd64.tar.gz"
+          dest: "/tmp/go{{ versions.golang }}.linux-amd64.tar.gz"
+        - url: "https://tpo.pe/pathogen.vim"
+          dest: "/root/.vim/autoload/pathogen.vim"
+        - url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+          dest: "/tmp/ohmyzsh_install.sh"
+          mode: "755"
+      archive:
+        - src: "/tmp/go{{ versions.golang }}.linux-amd64.tar.gz"
+          dest: "/usr/local"
+      dnf:
+        - "python3-pip"
+        - "glibc-langpack-en"
+        - "git"
+        - "vim"
+        - "tmux"
+        - "zsh"
+      pip:
+        - "flake8"
+        - "jedi"

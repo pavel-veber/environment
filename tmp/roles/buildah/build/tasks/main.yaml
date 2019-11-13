@@ -1,0 +1,64 @@
+---
+
+- name: "Get info about container"
+  set_fact:
+    buildah_container: "{{ hostvars[inventory_hostname]['container']['value'] }}"
+
+- name: "Create a directory if it does not exist"
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ buildah_container.dirs }}"
+  when: buildah_container.dirs is defined
+
+- name: "Install DNF packages"
+  dnf:
+    name: "{{ buildah_container.packages.dnf }}"
+  when: buildah_container.packages is defined and buildah_container.packages.dnf is defined
+
+- name: "Install PIP packages"
+  pip:
+    name: "{{ buildah_container.packages.pip }}"
+    executable: pip3.6
+    extra_args: "--no-cache-dir"
+  when: buildah_container.packages is defined and buildah_container.packages.pip is defined
+
+- name: "Download binary files"
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode | default('664') }}"
+  loop: "{{ buildah_container.packages.bin }}"
+  when: buildah_container.packages is defined and buildah_container.packages.bin is defined
+
+- name: "Unarchive files"
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: "{{ item.remote_src | default(True) }}"
+  loop: "{{ buildah_container.packages.archive }}"
+  when: buildah_container.packages is defined and buildah_container.packages.archive is defined
+
+- name: "Exec scripts"
+  shell: "{{ item }}"
+  loop: "{{ buildah_container.exec }}"
+  when: buildah_container.exec is defined
+
+- name: "Clone Git"
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+    recursive: "{{ item.recursive | default(omit) }}"
+  loop: "{{ buildah_container.git }}"
+  when: buildah_container.git is defined
+
+- name: "Copy files"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ buildah_container.files }}"
+  when: buildah_container.files is defined
+
+- name: "Clean all"
+  shell: "{{ item }}"
+  loop: "{{ buildah_container.clean }}"

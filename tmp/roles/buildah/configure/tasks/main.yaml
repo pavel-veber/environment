@@ -1,0 +1,32 @@
+---
+
+- name: "Get info about containers"
+  set_fact:
+    buildah_containers: "{{ buildah_containers | combine({item: hostvars[item]['container']['value']}) }}"
+  loop: "{{ groups['images-buildah'] }}"
+
+- name: "Configure images"
+  shell: >
+    buildah config
+    {% if item.value.author is defined %} --author={{ item.value.author | quote }} {%- endif %}
+    {% if item.value.cmd is defined %} --cmd={{ item.value.cmd | quote }} {%- endif %}
+    {% if item.value.entrypoint is defined %} --entrypoint={{ item.value.entrypoint | quote }} {%- endif %}
+    {% if item.value.workingdir is defined %} --workingdir={{ item.value.workingdir | quote }} {%- endif %}
+    {% if item.value.hostname is defined %} --hostname={{ item.value.hostname | quote }} {%- endif %}
+    {% if item.value.env is defined %}
+    {% for key, value in item.value.env.items() %}
+    --env {{ key }}={{ value | quote }}
+    {%- endfor %}
+    {%- endif %}
+    {% if item.value.labels is defined %}
+    {% for key, value in item.value.labels.items() %}
+    --label {{ key }}={{ value | quote }}
+    {%- endfor %}
+    {%- endif %}
+    {{ item.key }}
+  loop: "{{ buildah_containers | dict2items }}"
+
+- name: "Commit images"
+  shell: >
+    buildah commit {{ item.key }} {{ item.value.to_img }}
+  loop: "{{ buildah_containers | dict2items }}"

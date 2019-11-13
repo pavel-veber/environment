@@ -1,0 +1,4 @@
+[images-local]
+images-local ansible_connection=local
+
+[images-buildah]
