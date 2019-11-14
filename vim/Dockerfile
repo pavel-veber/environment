@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8
+FROM centos:8
 
 ENV LANG=en_US.UTF-8
 
