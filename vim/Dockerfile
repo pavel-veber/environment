@@ -1,6 +1,7 @@
 FROM centos:8
 
 ENV LANG=en_US.UTF-8
+ENV TERM=xterm-256color
 
 RUN dnf install -y --nodocs python3-pip glibc-langpack-en git vim && \
     pip3 install flake8 && \
@@ -14,6 +15,7 @@ RUN cd /root/.vim/bundle && \
     git clone https://github.com/nvie/vim-flake8.git && \
     git clone https://github.com/airblade/vim-gitgutter.git && \
     git clone git://github.com/nathanaelkane/vim-indent-guides.git && \
+    git clone https://github.com/itchyny/lightline.vim && \
     find /root/.vim/bundle/ -type d -name ".git" -prune -exec rm -rf {} \;
 
 COPY ./conf/.vimrc /root/.vimrc
