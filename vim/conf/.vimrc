@@ -11,4 +11,9 @@ set softtabstop=2
 set noendofline
 " set nofixendofline
 
+" NERDTree
 map <C-n> :NERDTreeToggle<CR>
+
+" light line
+set laststatus=2
+let g:lightline = {'colorscheme': 'wombat'}
