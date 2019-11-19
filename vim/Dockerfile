@@ -14,8 +14,8 @@ RUN cd /root/.vim/bundle && \
     git clone https://github.com/Xuyuanp/nerdtree-git-plugin.git && \
     git clone https://github.com/nvie/vim-flake8.git && \
     git clone https://github.com/airblade/vim-gitgutter.git && \
-    git clone git://github.com/nathanaelkane/vim-indent-guides.git && \
     git clone https://github.com/itchyny/lightline.vim && \
+    git clone https://github.com/Yggdroot/indentLine.git && \
     find /root/.vim/bundle/ -type d -name ".git" -prune -exec rm -rf {} \;
 
 COPY ./conf/.vimrc /root/.vimrc

@@ -14,6 +14,9 @@ set noendofline
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
 
-" light line
+" Light line
 set laststatus=2
 let g:lightline = {'colorscheme': 'wombat'}
+
+" Indent line
+let g:indentLine_color_term = 239
