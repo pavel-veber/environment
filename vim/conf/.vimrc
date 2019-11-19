@@ -20,3 +20,6 @@ let g:lightline = {'colorscheme': 'wombat'}
 
 " Indent line
 let g:indentLine_color_term = 239
+
+" Jedi
+autocmd FileType python setlocal completeopt-=preview
