@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        images: [env, vim]
+        images: [debug, ide]
 
     steps:
 
