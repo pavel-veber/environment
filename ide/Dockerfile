@@ -1,19 +1,22 @@
 FROM centos:8
 
-ENV LANG=en_US.UTF-8
-ENV TERM=xterm-256color
-ENV VER_GOLANG=1.13.5
-ENV PATH=$PATH:/usr/local/go/bin
+ARG DNF_PKGS="python3-pip glibc-langpack-en git vim tmux"
+ARG PIP_PKGS="flake8 jedi"
+ARG VER_GOLANG="1.13.5"
 
-RUN dnf install -y --nodocs python3-pip glibc-langpack-en git vim && \
-    pip3.6 install --no-cache-dir flake8 jedi && \
+ENV LANG="en_US.UTF-8" \
+    TERM="xterm-256color" \
+    PATH="$PATH:/usr/local/go/bin"
+
+RUN dnf install -y --nodocs ${DNF_PKGS} && \
+    pip3.6 install --no-cache-dir ${PIP_PKGS} && \
   # golang
     curl --silent https://dl.google.com/go/go${VER_GOLANG}.linux-amd64.tar.gz -o /tmp/go${VER_GOLANG}.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf /tmp/go${VER_GOLANG}.linux-amd64.tar.gz && \
   # pathogen
     mkdir -p /source /root/.vim/autoload /root/.vim/bundle && \
     curl -LSso /root/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
-    rm -rf /var/cache/yum /tmp/* /var/tmp/*
+    dnf clean all && rm -rf /var/cache/yum /tmp/* /var/tmp/*
 
 # vim plugins
 RUN cd /root/.vim/bundle && \
@@ -30,3 +33,5 @@ RUN cd /root/.vim/bundle && \
 COPY ./conf/.vimrc /root/.vimrc
 
 WORKDIR /source
+
+CMD tmux
