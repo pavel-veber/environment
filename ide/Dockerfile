@@ -12,7 +12,7 @@ RUN dnf install -y --nodocs ${DNF_PKGS} && \
     pip3.6 install --no-cache-dir ${PIP_PKGS} && \
   # kubectl
     KV=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt` && \
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/${KV}/bin/linux/amd64/kubectl
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/${KV}/bin/linux/amd64/kubectl && \
   # oh my zsh
     RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
   # golang
