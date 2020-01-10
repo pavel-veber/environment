@@ -7,13 +7,20 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        images: [debug, ide]
+    #    strategy:
+    #      matrix:
+    #        images: [debug, ide]
 
     steps:
 
     - uses: actions/checkout@master
 
     - name: Build the Docker image
-      run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
+      run: |
+        apt update
+        apt install software-properties-common uidmap -y
+        add-apt-repository ppa:projectatomic/ppa -y
+        apt update
+        apt install -y podman
+      podman run --rm centos:8 cat /etc/centos-release
+      #run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
