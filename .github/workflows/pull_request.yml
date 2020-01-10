@@ -22,5 +22,5 @@ jobs:
         add-apt-repository ppa:projectatomic/ppa -y
         apt update
         apt install -y podman
-      podman run --rm centos:8 cat /etc/centos-release
+        podman run --rm centos:8 cat /etc/centos-release
       #run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
