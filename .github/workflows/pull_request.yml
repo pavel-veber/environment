@@ -17,10 +17,10 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        apt update
-        apt install software-properties-common uidmap -y
-        add-apt-repository ppa:projectatomic/ppa -y
-        apt update
-        apt install -y podman
-        podman run --rm centos:8 cat /etc/centos-release
+        sudo apt update
+        sudo apt install software-properties-common uidmap -y
+        sudo add-apt-repository ppa:projectatomic/ppa -y
+        sudo apt update
+        sudo apt install -y podman
+        sudo podman run --rm centos:8 cat /etc/centos-release
       #run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
