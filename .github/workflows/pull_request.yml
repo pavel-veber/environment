@@ -25,7 +25,7 @@ jobs:
     - name: podman run
       run: |
         sudo -i
-        ctr1=$(buildah from "${1:-fedora}")
+        ctr1=$(buildah from docker.io/library/fedora)
         buildah containers
         buildah run "$ctr1" -- dnf update -y
 
