@@ -26,9 +26,9 @@ jobs:
       run: |
         sudo -i
         ctr1=$(buildah from docker.io/library/fedora)
-        buildah containers
         buildah run "$ctr1" -- dnf update -y
-
+        buildah commit "$ctr1" testimages-9282
+        buildah images
 
         
         #run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
