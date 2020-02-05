@@ -21,9 +21,14 @@ jobs:
         sudo apt install software-properties-common uidmap -y
         sudo add-apt-repository ppa:projectatomic/ppa -y
         sudo apt update
-        sudo apt install -y podman
+        sudo apt install -y podman buildah
     - name: podman run
       run: |
-        sudo podman run --rm docker.io/centos:8 cat /etc/centos-release
+        sudo -i
+        ctr1=$(buildah from "${1:-fedora}")
+        buildah containers
+        buildah run "$ctr1" -- dnf update -y
+
+
         
         #run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
