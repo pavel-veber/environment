@@ -7,28 +7,21 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    #    strategy:
-    #      matrix:
-    #        images: [debug, ide]
+      strategy:
+        matrix:
+          images: [debug, ide]
 
     steps:
 
     - uses: actions/checkout@master
 
-    - name: Build the Docker image
+    - name: Install buildah
       run: |
         sudo apt update
         sudo apt install software-properties-common uidmap -y
         sudo add-apt-repository ppa:projectatomic/ppa -y
         sudo apt update
         sudo apt install -y podman buildah
-    - name: podman run
-      run: |
-        sudo -i
-        ctr1=$(buildah from docker.io/library/fedora)
-        buildah run "$ctr1" -- dnf update -y
-        buildah commit "$ctr1" testimages-9282
-        buildah images
 
-        
-        #run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
+    - name: Build image ${{ matrix.images }}
+      run: cd ${{ matrix.images }} && ./build.py

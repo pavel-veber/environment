@@ -1,0 +1,5 @@
+[user]
+  name  = Pavel Veber
+  email = pavel.veber@yahoo.com
+[alias]
+  logp = log --graph --pretty=\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\"
