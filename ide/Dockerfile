@@ -35,7 +35,7 @@
 #    git clone https://github.com/fatih/vim-go.git && \
     find /root/.vim/bundle/ -type d -name ".git" -prune -exec rm -rf {} \;
 
-COPY ./conf/ /root/
+#COPY ./conf/ /root/
 
 WORKDIR /source
 

@@ -83,3 +83,7 @@
         dest: "{{ item.dest }}" 
       loop: "{{ buildah_container.files }}"
       when: buildah_container.files is defined
+
+    - name: "Clean all"
+      shell: "{{ item }}"
+      loop: "{{ buildah_container.clean }}"
