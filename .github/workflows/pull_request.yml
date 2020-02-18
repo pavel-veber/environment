@@ -22,4 +22,4 @@ jobs:
         sudo pip3 install ansible
 
     - name: Build images
-      run: ansible-playbook -i ./inventory/hosts ./build.yaml -vv
+      run: sudo ansible-playbook -i ./inventory/hosts ./build.yaml -vv
