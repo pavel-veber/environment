@@ -19,7 +19,7 @@ jobs:
         sudo add-apt-repository ppa:projectatomic/ppa -y
         sudo apt update
         sudo apt install -y podman buildah python3-pip
-        sudo pip3 install ansible
+        sudo pip3 install setuptools ansible
 
     - name: Build images
       run: ansible-playbook -i ./inventory/hosts ./build.yaml -vv
