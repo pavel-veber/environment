@@ -7,9 +7,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          images: [debug, ide]
 
     steps:
 
@@ -21,7 +18,8 @@ jobs:
         sudo apt install software-properties-common uidmap -y
         sudo add-apt-repository ppa:projectatomic/ppa -y
         sudo apt update
-        sudo apt install -y podman buildah
+        sudo apt install -y podman buildah python3-pip
+        sudo pip3 install ansible
 
-    - name: Build image ${{ matrix.images }}
-      run: cd ${{ matrix.images }} && ./build.py
+    - name: Build images
+      run: ansible-playbook -i ./inventory/hosts ./build.yaml -vv

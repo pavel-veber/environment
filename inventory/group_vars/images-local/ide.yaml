@@ -5,7 +5,7 @@ versions:
 
 images:
   ide:
-    from_img: "centos"
+    from_img: "centos:8"
     env:
       LANG: "en_US.UTF-8"
       TERM: "xterm-256color"
@@ -15,29 +15,31 @@ images:
       - "/root/.vim/autoload/"
       - "/root/.vim/bundle"
     files:
-      - src: "{{ playbook_dir }}/files/ide/conf/"
+      - src: "{{ playbook_dir }}/files/ide/home/"
         dest: "/root/"
+      - src: "{{ playbook_dir }}/files/ide/etc/"
+        dest: "/etc/"
     exec:
       - "RUNZSH=no /tmp/ohmyzsh_install.sh"
-    clean: "{{ common_clean_commands }}"
+    clean: "{{ common_clean_commands + ['find /root/.vim/bundle/ -type d -name \".git\" -prune -exec rm -rf {} \\;'] }}"
     git:
       - repo: "https://github.com/scrooloose/nerdtree.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/nerdtree"
       - repo: "https://github.com/Xuyuanp/nerdtree-git-plugin.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/nerdtree-git-plugin"
       - repo: "https://github.com/nvie/vim-flake8.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/vim-flake8"
       - repo: "https://github.com/airblade/vim-gitgutter.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/vim-gitgutter"
       - repo: "https://github.com/itchyny/lightline.vim"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/lightline"
       - repo: "https://github.com/Yggdroot/indentLine.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/indentLine"
       - repo: "https://github.com/davidhalter/jedi-vim.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/jedi-vim"
         recursive: True
       - repo: "https://github.com/fatih/vim-go.git"
-        dest: "/root/.vim/bundle"
+        dest: "/root/.vim/bundle/vim-go"
     packages:
       bin:
         - url: "https://storage.googleapis.com/kubernetes-release/release/{{ versions.kubernetes }}/bin/linux/amd64/kubectl"

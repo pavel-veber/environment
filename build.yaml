@@ -36,6 +36,13 @@
       loop: "{{ buildah_container.dirs }}"
       when: buildah_container.dirs is defined
 
+    - name: "Copy files"
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}" 
+      loop: "{{ buildah_container.files }}"
+      when: buildah_container.files is defined
+
     - name: "Install DNF packages"
       dnf:
         name: "{{ buildah_container.packages.dnf }}"
@@ -76,13 +83,6 @@
         recursive: "{{ item.recursive | default(omit) }}"
       loop: "{{ buildah_container.git }}"
       when: buildah_container.git is defined
-
-    - name: "Copy files"
-      copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}" 
-      loop: "{{ buildah_container.files }}"
-      when: buildah_container.files is defined
 
     - name: "Clean all"
       shell: "{{ item }}"
