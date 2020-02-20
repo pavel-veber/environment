@@ -6,6 +6,13 @@ versions:
 images:
   ide:
     from_img: "docker.io/library/centos:8"
+    to_img: "docker.pkg.github.com/pavel-veber/images/ide:latest"
+    labels:
+      version: "1.0"
+      name: "ide"
+      description: "Just VIM with some plugins"
+    author: "pavel.veber@yahoo.com"
+    cmd: "tmux"
     env:
       LANG: "en_US.UTF-8"
       TERM: "xterm-256color"
@@ -17,10 +24,11 @@ images:
     files:
       - src: "{{ playbook_dir }}/files/ide/home/"
         dest: "/root/"
-      - src: "{{ playbook_dir }}/files/ide/etc/"
-        dest: "/etc/"
+      - src: "{{ playbook_dir }}/files/ide/etc/dnf/dnf.conf"
+        dest: "/etc/dnf/dnf.conf"
     exec:
       - "RUNZSH=no /tmp/ohmyzsh_install.sh"
+      - "usermod -s /bin/sh $(whoami)"
     clean: "{{ common_clean_commands + ['find /root/.vim/bundle/ -type d -name \".git\" -prune -exec rm -rf {} \\;'] }}"
     git:
       - repo: "https://github.com/scrooloose/nerdtree.git"
