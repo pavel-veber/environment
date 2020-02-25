@@ -1,4 +1,4 @@
-name: Rebuild all images 
+name: Rebuild and push all images
 
 on:
   push:
@@ -10,19 +10,19 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        images: [debug, ide]
 
     steps:
 
     - uses: actions/checkout@master
 
-    - name: Docker login
-      run: docker login docker.pkg.github.com -u pavel-veber -p ${{ secrets.GITHUB_TOKEN }}
+    - name: Install requirements
+      run: |
+        sudo apt update
+        sudo apt install software-properties-common uidmap -y
+        sudo add-apt-repository ppa:projectatomic/ppa -y
+        sudo apt update
+        sudo apt install -y podman buildah python3-pip python3-setuptools
+        sudo pip3 install ansible
 
-    - name: Build the Docker image
-      run: cd ${{ matrix.images }} && docker build -t docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest .
-
-    - name: Docker push 
-      run: docker push docker.pkg.github.com/pavel-veber/images/${{ matrix.images }}:latest
+    - name: Build images
+      run: sudo ansible-playbook -i ./inventory/hosts ./images.yaml -e "buildah_password=${{ secrets.PUSH_TOKEN }}" -e "buildah_login=pavel.veber" -t all -vvvv

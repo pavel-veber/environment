@@ -1,4 +1,4 @@
-name: Rebuild all images 
+name: Rebuild all images
 
 on: [pull_request]
 
@@ -12,7 +12,7 @@ jobs:
 
     - uses: actions/checkout@master
 
-    - name: Install buildah
+    - name: Install requirements
       run: |
         sudo apt update
         sudo apt install software-properties-common uidmap -y
@@ -22,7 +22,7 @@ jobs:
         sudo pip3 install ansible
 
     - name: Build images
-      run: sudo ansible-playbook -i ./inventory/hosts ./build.yaml -vvvv
+      run: sudo ansible-playbook -i ./inventory/hosts ./images.yaml -t build -vvvv
 
     - name: List images
       run: sudo buildah images

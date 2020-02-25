@@ -1,0 +1,25 @@
+---
+
+- name: "Create containers"
+  hosts: images-local
+  become: False
+  roles:
+  - { role: buildah/create, tags: ["build"] }
+
+- name: "Build image"
+  hosts: images-buildah
+  become: False
+  roles:
+  - { role: buildah/build, tags: ["build"] }
+
+- name: "Configure and commit containers"
+  hosts: images-local
+  become: False
+  roles:
+  - { role: buildah/configure, tags: ["build"] }
+
+- name: "Push containers"
+  hosts: images-local
+  become: False
+  roles:
+  - { role: buildah/push, tags: ["push"] }
