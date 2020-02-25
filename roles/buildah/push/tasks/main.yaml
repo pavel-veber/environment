@@ -8,7 +8,6 @@
 - name: "Buildah login"
   shell: >
     buildah login -u {{ buildah_login }} -p {{ buildah_password }} docker.pkg.github.com
-  loop: "{{ buildah_containers | dict2items }}"
 
 - name: "Push images"
   shell: >
