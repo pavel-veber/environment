@@ -1,0 +1,16 @@
+---
+
+- name: "Create container "
+  shell: |
+    buildah from {{ item.value.from_img }}
+  register: tmp_buildah_container
+  loop: "{{ images | dict2items }}"
+
+- name: "Register new host"
+  add_host:
+    hostname: "{{ item.stdout }}"
+    groups: "images-buildah"
+    ansible_connection: "buildah"
+    ansible_ssh_pipelining: True
+    container: "{{ item.item }}" 
+  loop: "{{ tmp_buildah_container.results }}"
