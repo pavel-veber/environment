@@ -6,7 +6,7 @@ versions:
 images:
   ide:
     from_img: "docker.io/library/centos:8"
-    to_img: "docker.pkg.github.com/pavel-veber/environment/ide:latest"
+    to_img: "quay.io/pavel_veber/ide:latest"
     labels:
       version: "1.0"
       name: "ide"
