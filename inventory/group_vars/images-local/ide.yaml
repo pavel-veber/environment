@@ -13,7 +13,7 @@ images:
       description: "Just VIM with some plugins"
     author: "pavel.veber@yahoo.com"
     cmd: "tmux"
-    workdir: "/source/"
+    workingdir: "/source/"
     hostname: "ide"
     env:
       LANG: "en_US.UTF-8"

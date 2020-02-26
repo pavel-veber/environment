@@ -11,7 +11,7 @@
     {% if item.value.author is defined %} --author={{ item.value.author | quote }} {%- endif %}
     {% if item.value.cmd is defined %} --cmd={{ item.value.cmd | quote }} {%- endif %}
     {% if item.value.entrypoint is defined %} --entrypoint={{ item.value.entrypoint | quote }} {%- endif %}
-    {% if item.value.workdir is defined %} --workdir={{ item.value.workdir | quote }} {%- endif %}
+    {% if item.value.workingdir is defined %} --workingdir={{ item.value.workingdir | quote }} {%- endif %}
     {% if item.value.hostname is defined %} --hostname={{ item.value.hostname | quote }} {%- endif %}
     {% if item.value.env is defined %}
     {% for key, value in item.value.env.items() %}
