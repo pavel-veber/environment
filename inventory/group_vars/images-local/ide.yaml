@@ -13,6 +13,8 @@ images:
       description: "Just VIM with some plugins"
     author: "pavel.veber@yahoo.com"
     cmd: "tmux"
+    workdir: "/source/"
+    hostname: "ide"
     env:
       LANG: "en_US.UTF-8"
       TERM: "xterm-256color"
@@ -28,7 +30,7 @@ images:
         dest: "/etc/dnf/dnf.conf"
     exec:
       - "RUNZSH=no /tmp/ohmyzsh_install.sh"
-      - "usermod -s /bin/sh $(whoami)"
+      - "usermod -s /usr/bin/zsh $(whoami)"
     clean: "{{ common_clean_commands + ['find /root/.vim/bundle/ -type d -name \".git\" -prune -exec rm -rf {} \\;'] }}"
     git:
       - repo: "https://github.com/scrooloose/nerdtree.git"
