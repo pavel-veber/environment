@@ -7,7 +7,7 @@
 
 - name: "Buildah login"
   shell: >
-    buildah login -u {{ buildah_login }} -p {{ buildah_password }} docker.pkg.github.com
+    buildah login -u {{ buildah_login }} -p {{ buildah_password }} quay.io
 
 - name: "Push images"
   shell: >
