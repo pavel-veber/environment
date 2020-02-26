@@ -25,4 +25,4 @@ jobs:
         sudo pip3 install ansible
 
     - name: Build images
-      run: sudo ansible-playbook -i ./inventory/hosts ./images.yaml -e "buildah_password=${{ secrets.push_token }}" -e "buildah_login=pavel_veber" -t all -vvvv
+      run: sudo ansible-playbook -i ./inventory/hosts ./images.yaml -e "buildah_password=${{ secrets.quay_token }}" -e "buildah_login=pavel_veber" -t all -vvvv
